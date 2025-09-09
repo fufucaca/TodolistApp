@@ -10,6 +10,9 @@ function App () {
   // state untuk mengontrol nilai input 
   const [inputValue, setInputValue] = useState('');
 
+  // state untuk menampung input search
+  const [searchQuery, setSearchQuery] = useState('');
+
   // fungsi untuk menambah tugas baru 
   const handleAddTodo = e => {
     e.preventDefault() // mencegah form merefresh halaman 
@@ -38,6 +41,11 @@ function App () {
     setTodos(todos.filter(todo => todo.id !== id));
   };
 
+  // logika fungsi search
+  const filteredTodos = todos.filter(todo => 
+    todo.text.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center font-sans">
       <div className="w-full max-w-md bg-transparent border border-gray-400 rounded-lg shadow-lg p-6">
@@ -59,9 +67,20 @@ function App () {
           </button>
         </form>
 
+        {/* input search */}
+        <div className="mb-4">
+          <input 
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={e => setSearchQuery(e.target.value)}
+          className="w-full p-2 border border-gray-400 bg-transparent text-gray-300 rounded-lg focus:outline-none focus:border-violet-600 transition-colors" 
+          />
+        </div>
+
         {/* Daftar tugas */}
         <ul>
-          {todos.map(todo => (
+          {filteredTodos.map(todo => (
             <li
             key={todo.id}
             className="flex items-center justify-between p-4 mb-3 bg-transparent border border-gray-400 rounded-lg border-gray-300 hover:bg-gray-700 transition-colors">
